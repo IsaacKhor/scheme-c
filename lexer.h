@@ -29,8 +29,10 @@ struct token {
 
 struct tok_lst;
 
+char *get_tokcls_name(enum tok_class cls);
+
 void compile_token_definitions();
-void free_tok_stream(struct tok_lst *tokens);
+void free_tok_lst(struct tok_lst *tokens);
 
 struct tok_lst *tokenise_string(char const *input_str);
 
@@ -42,5 +44,6 @@ void print_tokens(struct tok_lst *tokens);
 void advance_token_stream(struct tok_lst *tokens);
 struct token *read_cur_tok(struct tok_lst *tokens);
 struct token *peek_next_tok(struct tok_lst *tokens);
+bool has_next_token(struct tok_lst *tokens);
 int get_stream_pos(struct tok_lst *tokens);
 void set_stream_pos(struct tok_lst *tokens, int n);
