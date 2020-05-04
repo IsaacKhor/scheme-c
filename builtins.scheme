@@ -1,0 +1,14 @@
+(define (append x y)
+    (if (equal? 1 (length x))
+        (cons (car x) y)
+        (cons (car x) (append (cdr x) y))))
+
+(define (last l)
+    (cond ((not (list? l)) '())
+          ((equal? 1 (length l)) (car l))
+          ((equal? 0 (length l)) '())
+          (else (last (cdr l)))))
+
+(define (cadr l) (car (cdr l)))
+(define (caddr l) (car (cdr (cdr l))))
+(define (cadddr l) (car (cdr (cdr (cdr l)))))

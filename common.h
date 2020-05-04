@@ -97,6 +97,12 @@
         }                                               \
     } while(0)
 
+#define exit_msg(STATUS, MSG, ...)     \
+    do {                               \
+        log_err(MSG, ##__VA_ARGS__);   \
+        exit(STATUS);                  \
+    } while(0)
+
 #define ensure_mem(PTR) \
     do { ensure_exit((PTR) != NULL, EX_OSERR, "Out of memory"); } while(0)
 

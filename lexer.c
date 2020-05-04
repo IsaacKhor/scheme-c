@@ -48,20 +48,21 @@ struct tok_defn definitions[] = {
     { "^(", TOK_PAREN_OPEN, "open paren", 0, {} },
     { "^)", TOK_PAREN_CLOSE, "close paren", 0, {} },
     { "^'", TOK_QUOTE, "quote", 0, {} },
-    { "^`", TOK_QUASIQUOTE, "backquote", 0, {} },
-    { "^,@", TOK_UNQUOTE_SPLICE, "list unquote", 0, {} },
-    { "^,", TOK_UNQUOTE, "normal unquote", 0, {} },
+    { "^`", TOK_QUASIQUOTE, "quasiquote", 0, {} },
+    { "^,@", TOK_UNQUOTE_SPLICE, "unquote splice", 0, {} },
+    { "^,", TOK_UNQUOTE, "unquoce", 0, {} },
     { "^\\. ", TOK_CONS_DOT, "cons dot", 0, {} },
     // The '-' doesn't need to be escaped since it is interpreted as literal
     // if first or last character of a character class in the POSIX
     // non-extended regex
     { 
-        .pattern = "^[a-z!$%&*/:<=>?~_^+-][-+._a-z0-9]*", 
+        .pattern = "^[a-z!$%&*/:<=>?~_^+-][-+._a-z0-9?]*", 
         .cls = TOK_IDENTIFIER, 
         .cls_name = "identifier", 
         .patflags = REG_ICASE, 
         .regex = {} 
     },
+    // HACK: pretend this doesnt exist in NUM_TOK_DEFNS
     { NULL, TOK_END_OF_FILE, "EOF", 0, {} },
 };
 
@@ -69,7 +70,7 @@ char *get_tokcls_name(enum tok_class cls) {
     return definitions[cls].cls_name;
 }
 
-// DIRTY HACK: -1 to not include the EOF token
+// DIRTY HACK: -1 to not include the EOF token so we never try to match it
 const int NUM_TOK_DEFNS = sizeof(definitions)/sizeof(struct tok_defn) - 1;
 
 void compile_token_definitions() {
@@ -91,8 +92,10 @@ void add_token(struct tok_lst *ta, enum tok_class cls,
     const char *const start_pos, int len) {
 
     if(ta->len == ta->capacity) {
-        ta->arr = realloc(ta->arr, (int)(ta->capacity * 1.5));
-        ensure_exit(ta->arr != NULL, 1, "Out of memory");
+    	int new_capacity = ta->capacity*2;
+        ta->arr = realloc(ta->arr, new_capacity*sizeof(struct token));
+        ta->capacity = new_capacity;
+        ensure_mem(ta->arr);
     } 
 
     struct token *tok = &ta->arr[ta->len];

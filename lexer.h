@@ -1,3 +1,6 @@
+#ifndef __LEXER_H__
+#define __LEXER_H__
+
 #include <stdbool.h>
 
 enum tok_class {
@@ -47,3 +50,5 @@ struct token *peek_next_tok(struct tok_lst *tokens);
 bool has_next_token(struct tok_lst *tokens);
 int get_stream_pos(struct tok_lst *tokens);
 void set_stream_pos(struct tok_lst *tokens, int n);
+
+#endif

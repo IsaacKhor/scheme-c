@@ -1,0 +1,55 @@
+(define (member E L)
+        (cond ((null? L) #f)
+              ((equal? E (car L)) L)
+              (#t (member E (cdr L)))))
+
+(define (member E L)
+        (cond ((null? L) #f)
+              ((equal? E (car L)) L)
+              (else (member E (cdr L)))))
+
+(define (last L)
+        (cond ((null? (cdr L)) (car L))
+              (#t (last (cdr L)))))
+
+
+(define (myappend a b)
+    (cond ((null? a) b)
+          (#t (cons (car a)
+                    (myappend (cdr a) b)))))
+
+(define (myappend a b)
+    (cond ((null? a) b)
+          (else (cons (car a)
+                    (myappend (cdr a) b)))))
+
+(define (squash l)
+    (cond ((null? l) #f)
+          ((symbol? l) (list l))
+          (#t (append (squash (car l))
+                      (squash (cdr l))))))
+
+(define (squash l)
+    (cond ((null? l) #f)
+          ((symbol? l) (list l))
+          (else (append (squash (car l))
+                        (squash (cdr l))))))
+
+(define (squash l)
+    (cond ((null? l) '())
+          ((symbol? l) (cons l #f))
+          (#t (append (squash (car l))
+                      (squash (cdr l))))))
+
+(define (squash l)
+    (cond ((null? l) (quote ()))
+          ((symbol? l) (cons l #f))
+          (#t (append (squash (car l))
+                      (squash (cdr l))))))
+
+(define (squash l)
+    (cond ((null? l) '())
+          ((symbol? l) (list l))
+          (#t (append (squash (car l))
+                      (squash (cdr l))))))
+

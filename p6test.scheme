@@ -1,0 +1,33 @@
+(define (towerofhanoi n) (transfer 'A 'B 'C n))
+
+(define (movedisk from to)
+ (list (list 'move 'disk 'from from 'to to)))
+
+(define (transfer from to spare n)
+ (cond ((equal? n 1) (movedisk from to))
+       (#t (append (transfer from spare to (- n 1))
+                     (append (movedisk from to)
+                             (transfer spare to from (- n 1)))))))
+
+(define (towerofhanoi n) (transfer (quote A) (quote B) (quote C) n))
+
+(define (movedisk from to)
+ (list (list (quote move) (quote disk) (quote from) from (quote to) to)))
+
+(define (transfer from to spare n)
+ (cond ((equal? n 1) (movedisk from to))
+       (#t (append (transfer from spare to (- n 1))
+                     (append (movedisk from to)
+                             (transfer spare to from (- n 1)))))))
+
+(define (countatoms l)
+   (cond ((null? l) 0)
+         ((symbol? l) 1)
+         (#t (+ (countatoms (car l))
+                (countatoms (cdr l))))))
+
+(define (countatoms l)
+   (cond ((null? l) 0)
+         ((symbol? l) 1)
+         (else (+ (countatoms (car l))
+                (countatoms (cdr l))))))

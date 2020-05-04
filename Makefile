@@ -3,10 +3,13 @@ INCLUDES = -I.
 LIBS = -lc -lpthread
 FLAGS =
 
-.PHONY: clean
+.PHONY: clean zip
 
-scheme: main.c lexer.c parser.c
+scheme: main.c builtins.c environment.c eval.c internal_rep.c lexer.c parser.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LIBS) $(FLAGS)
 
+zip:
+	zip cs170-scheme.zip *.c *.h *.scheme Makefile
+
 clean:
-	rm -f scheme
+	rm -f scheme cs170-scheme.zip
